@@ -1694,4 +1694,17 @@ class SolutionEasy {
         findLeafs(root.left, list);
         findLeafs(root.right, list);
     }
+
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (val == root.val) return root;
+        if (root.left != null) {
+            TreeNode left = searchBST(root.left, val);
+            if (left != null && val == left.val) return left;
+        }
+        if (root.right != null) {
+            TreeNode right = searchBST(root.right, val);
+            if (right != null && val == right.val) return right;
+        }
+        return null;
+    }
 }
