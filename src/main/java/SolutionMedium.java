@@ -853,4 +853,21 @@ public class SolutionMedium {
         return head;
     }
 
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        rightView(root, result, 0);
+        return result;
+    }
+
+    public void rightView(TreeNode current, List<Integer> list, int depth) {
+        if (current == null) return;
+        if (depth == list.size()) {
+            list.add(current.val);
+        }
+
+        rightView(current.right, list, depth + 1);
+        rightView(current.left, list, depth + 1);
+
+    }
+
 }
