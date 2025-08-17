@@ -1,4 +1,12 @@
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 public class SolutionMedium {
 
@@ -867,7 +875,47 @@ public class SolutionMedium {
 
         rightView(current.right, list, depth + 1);
         rightView(current.left, list, depth + 1);
+    }
 
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        boolean[] keys = new boolean[rooms.size()];
+        canVisitAllRoomsHelper(0, keys, rooms);
+        for (boolean key : keys) {
+            if (!key) return false;
+        }
+        return true;
+    }
+
+    private void canVisitAllRoomsHelper(int curr, boolean[] keys, List<List<Integer>> rooms) {
+        keys[curr] = true;
+        for (Integer next : rooms.get(curr)) {
+            if (!keys[next]) {
+                canVisitAllRoomsHelper(next, keys, rooms);
+            }
+        }
+    }
+
+    public boolean canVisitAllRooms2(List<List<Integer>> rooms) {
+        boolean[] visited = new boolean[rooms.size()];
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(0);
+
+        while (queue.size() > 0) {
+            int curr = queue.remove();
+            if (visited[curr]) continue;
+            visited[curr] = true;
+
+            for (int key : rooms.get(curr)) {
+                if (!visited[key]) {
+                    queue.add(key);
+                }
+            }
+        }
+
+        for (boolean room : visited) {
+            if (!room) return false;
+        }
+        return true;
     }
 
 }
