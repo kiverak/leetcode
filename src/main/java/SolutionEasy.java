@@ -1731,4 +1731,17 @@ class SolutionEasy {
 
         return sb.reverse().toString();
     }
+
+    public int countSegments(String s) {
+        int counter = 0;
+        char ch;
+        for (int i = 0; i < s.length(); i++) {
+            ch = s.charAt(i);
+            if (ch != ' ' && (i == 0 || s.charAt(i - 1) == ' ')) {
+                counter++;
+            }
+        }
+
+        return counter;
+    }
 }
