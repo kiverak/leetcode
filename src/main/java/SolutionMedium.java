@@ -1,12 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class SolutionMedium {
 
@@ -916,6 +908,77 @@ public class SolutionMedium {
             if (!room) return false;
         }
         return true;
+    }
+
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length();
+        int maxLength = 0;
+        int[] charIndex = new int[128];
+        Arrays.fill(charIndex, -1);
+        int left = 0;
+
+        for (int right = 0; right < n; right++) {
+            if (charIndex[s.charAt(right)] >= left) {
+                left = charIndex[s.charAt(right)] + 1;
+            }
+            charIndex[s.charAt(right)] = right;
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
+    }
+
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] results = new int[temperatures.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < temperatures.length; i++) {
+            while (!stack.isEmpty() && temperatures[stack.peek()] < temperatures[i]) {
+                results[stack.peek()] = i - stack.pop();
+            }
+            stack.push(i);
+        }
+
+        return results;
+    }
+
+    public int[] dailyTemperatures2(int[] temperatures) {
+        int[] res = new int[temperatures.length];
+        Deque<Integer> deque = new ArrayDeque<>();
+
+        for (int i = temperatures.length - 1; i >= 0; --i) {
+            if (deque.isEmpty()) {
+                deque.offerFirst(i);
+                res[i] = 0;
+            } else {
+                while (!deque.isEmpty() && temperatures[i] >= temperatures[deque.peekFirst()]) {
+                    deque.pollFirst();
+                }
+
+                if (deque.isEmpty()) {
+                    res[i] = 0;
+                } else {
+                    res[i] = deque.peekFirst() - i;
+                }
+
+                deque.offerFirst(i);
+            }
+        }
+
+        return res;
+    }
+
+    public static int[] dailyTemperatures3(int[] temperatures) {
+        int[] result = new int[temperatures.length];
+        int[] stack = new int[temperatures.length];
+        int top = -1;
+        for(int i = 0; i < temperatures.length; i++) {
+            while(top > -1 && temperatures[i] > temperatures[stack[top]]) {
+                result[stack[top]] = i - stack[top];
+                top--;
+            }
+            stack[++top] = i;
+        }
+        return result;
     }
 
 }
