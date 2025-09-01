@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.*;
 
 public class SolutionMedium {
@@ -971,8 +972,8 @@ public class SolutionMedium {
         int[] result = new int[temperatures.length];
         int[] stack = new int[temperatures.length];
         int top = -1;
-        for(int i = 0; i < temperatures.length; i++) {
-            while(top > -1 && temperatures[i] > temperatures[stack[top]]) {
+        for (int i = 0; i < temperatures.length; i++) {
+            while (top > -1 && temperatures[i] > temperatures[stack[top]]) {
                 result[stack[top]] = i - stack[top];
                 top--;
             }
@@ -981,4 +982,30 @@ public class SolutionMedium {
         return result;
     }
 
+    public int myAtoi(String s) {
+        s = s.trim();
+        if (s.length() == 0) return 0;
+
+        int sign = 1, i = 0;
+        long res = 0;
+
+        if (s.charAt(0) == '-') {
+            sign = -1;
+            i++;
+        } else if (s.charAt(0) == '+') {
+            i++;
+        }
+
+        while (i < s.length()) {
+            char ch = s.charAt(i);
+            if (ch < '0' || ch > '9') break;
+
+            res = res * 10 + (ch - '0');
+            if (sign * res > Integer.MAX_VALUE) return Integer.MAX_VALUE;
+            if (sign * res < Integer.MIN_VALUE) return Integer.MIN_VALUE;
+
+            i++;
+        }
+        return (int) (sign * res);
+    }
 }
